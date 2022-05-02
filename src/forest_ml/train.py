@@ -1,5 +1,6 @@
 import argparse
 import pathlib
+from .parse_dataset import get_dataset
 parser = argparse.ArgumentParser(description='Train the model')
 parser.add_argument('--path-to-dataset', type=pathlib.Path, required=True,help='A path to the file with your dataset')
 parser.add_argument('--path-save-model', type=pathlib.Path, required=False, default='../../models/', help='A path where to save the trained model')
@@ -10,4 +11,9 @@ parser.add_argument('--max-iter', type=bool, required=False, default=False, help
 
 def train():
     arguments = parser.parse_args()
-    print(arguments)
+    X_train, X_test, y_train, y_test = get_dataset(
+        arguments.path_to_dataset,
+        arguments.random_state,
+        arguments.test_split_ratio,
+    )
+    print(X_train)
