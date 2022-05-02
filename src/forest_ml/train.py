@@ -3,7 +3,7 @@ import pathlib
 from .parse_dataset import get_dataset
 from joblib import dump
 from .model_pipeline import create_pipeline
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_validate
 
 import mlflow
 import mlflow.sklearn
@@ -32,6 +32,9 @@ def train(
         csv_path=path_to_dataset, split_into_train_test=False, random_state=random_state, test_split_ratio=test_split_ratio
     )
     pipeline = create_pipeline(use_scaler=use_scaler)
-    accuracy = cross_val_score(pipeline, X, y)
-    print(accuracy)
+    scoring = {'acc': 'accuracy',
+               'f1_weighted': 'f1_weighted',
+               'roc_auc_ovr': 'roc_auc_ovr'}
+    scores = cross_validate(pipeline, X, y, scoring=scoring)
+    print(scores)
     dump(pipeline, path_save_model)
