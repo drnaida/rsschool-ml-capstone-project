@@ -3,6 +3,7 @@ import pathlib
 from .parse_dataset import get_dataset
 from joblib import dump
 from .model_pipeline import create_pipeline
+from sklearn.model_selection import cross_val_score
 
 import mlflow
 import mlflow.sklearn
@@ -27,11 +28,10 @@ def train(
         max_iter: int=arguments.max_iter,
         logreg_c: float=arguments.logreg_c,
 ) -> None:
-    X_train, X_test, y_train, y_test = get_dataset(
-        path_to_dataset,
-        random_state,
-        test_split_ratio,
+    X, y = get_dataset(
+        csv_path=path_to_dataset, split_into_train_test=False, random_state=random_state, test_split_ratio=test_split_ratio
     )
-    pipeline = create_pipeline(use_scaler=use_scaler, max_iter=max_iter, logreg_C=logreg_c, random_state=random_state)
-    pipeline.fit(X_train, y_train)
+    pipeline = create_pipeline(use_scaler=use_scaler)
+    accuracy = cross_val_score(pipeline, X, y)
+    print(accuracy)
     dump(pipeline, path_save_model)

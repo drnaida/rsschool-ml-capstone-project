@@ -3,7 +3,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 
 def create_pipeline(
-    use_scaler: bool, max_iter: int, logreg_C: float, random_state: int
+    use_scaler: bool=False, max_iter: int=100, logreg_C: float=1.0, random_state: int=42
 ) -> Pipeline:
     pipeline_steps = []
     clf = RandomForestClassifier
