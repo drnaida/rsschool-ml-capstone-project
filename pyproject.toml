@@ -4,6 +4,9 @@ version = "0.1.0"
 description = ""
 authors = ["AnzhelikaKurnikova <anzhelika.kurnikova@vicuesoft.com>"]
 
+[tool.poetry.scripts]
+train = "forest_ml.train:train"
+
 [tool.poetry.dependencies]
 python = "^3.9"
 scikit-learn = "^1.0.2"
