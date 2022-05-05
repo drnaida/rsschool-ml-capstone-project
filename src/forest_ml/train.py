@@ -19,23 +19,23 @@ parser.add_argument('--model', type=str, required=False, choices=['RandomForestC
 
 #hyperparameters for random forest classifier
 parser.add_argument('--max-depth', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
-parser.add_argument('--min-sample-split', type=int, required=False, default=2, help='hyperparameter for random forest and extratreeclassifier')
+parser.add_argument('--min-sample-split', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
 parser.add_argument('--max-leaf-nodes', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
-parser.add_argument('--min-samples-leaf', type=int, required=False, default=1, help='hyperparameter for random forest and extratreeclassifier')
-parser.add_argument('--n-estimators', type=int, required=False, default=100, help='hyperparameter for random forest and extratreeclassifier')
+parser.add_argument('--min-samples-leaf', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
+parser.add_argument('--n-estimators', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
 parser.add_argument('--max-samples', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
-parser.add_argument('--max-features', type=int, required=False, default='auto', help='hyperparameter for random forest and extratreeclassifier')
+parser.add_argument('--max-features', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
 
 #knn
-parser.add_argument('--n-neighbors', type=int, required=False, default=5, help='hyperparameter for knn')
-parser.add_argument('--weights', type=str, required=False, default='uniform', help='hyperparameter for knn')
-parser.add_argument('--leaf_size', type=int, required=False, default=30, help='hyperparameter for knn')
+parser.add_argument('--n-neighbors', type=int, required=False, default=None, help='hyperparameter for knn')
+parser.add_argument('--weights', type=str, required=False, default=None, help='hyperparameter for knn')
+parser.add_argument('--leaf_size', type=int, required=False, default=None, help='hyperparameter for knn')
 
 #logistic regression
-parser.add_argument('--max-iter', type=int, required=False, default=100, help='hyperparameter for logistic regression')
-parser.add_argument('--logreg-c', type=float, required=False, default=1.0, help='hyperparameter for logistic regression')
-parser.add_argument('--penalty', type=str, required=False, default='l2', help='hyperparameter for logistic regression')
-parser.add_argument('--solver', type=str, required=False, default='lbfgs', help='hyperparameter for logistic regression')
+parser.add_argument('--max-iter', type=int, required=False, default=None, help='hyperparameter for logistic regression')
+parser.add_argument('--C', type=float, required=False, default=None, help='hyperparameter for logistic regression')
+parser.add_argument('--penalty', type=str, required=False, default=None, help='hyperparameter for logistic regression')
+parser.add_argument('--solver', type=str, required=False, default=None, help='hyperparameter for logistic regression')
 arguments = parser.parse_args()
 
 def train(
@@ -54,16 +54,38 @@ def train(
         max_features: int=arguments.max_features,
         n_neighbors: int=arguments.n_neighbors,
         weights: int=arguments.weights,
-        leaft_size: int=arguments.leaf_size,
+        leaf_size: int=arguments.leaf_size,
         max_iter: int=arguments.max_iter,
-        logreg_c: float=arguments.logreg_c,
+        C: float=arguments.C,
         penalty: str=arguments.penalty,
         solver: str=arguments.solver
 ) -> None:
+    params = {
+        'random_state': random_state,
+        'max_depth': max_depth,
+        'min_sample_split': min_sample_split,
+        'max_leaf_nodes': max_leaf_nodes,
+        'min_samples_leaf': min_samples_leaf,
+        'n_estimators': n_estimators,
+        'max_samples': max_samples,
+        'max_features': max_features,
+        'n_neighbors': n_neighbors,
+        'weights': weights,
+        'leaf_size': leaf_size,
+        'max_iter': max_iter,
+        'C': C,
+        'penalty': penalty,
+        'solver': solver
+    }
+    for key, value in dict(params).items():
+        if value is None:
+            del params[key]
+
+    print('params', params)
     X, y = get_dataset(
         csv_path=path_to_dataset, split_into_train_test=False, random_state=random_state, test_split_ratio=test_split_ratio
     )
-    pipeline = create_pipeline(model=model, use_scaler=use_scaler)
+    pipeline = create_pipeline(model=model, use_scaler=use_scaler, **params)
     scoring = {'acc': 'accuracy',
                'f1_weighted': 'f1_weighted',
                'roc_auc_ovr': 'roc_auc_ovr'}

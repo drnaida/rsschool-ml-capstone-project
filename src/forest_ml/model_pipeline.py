@@ -5,24 +5,24 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 
 def create_pipeline(
-    model: str = RandomForestClassifier, use_scaler: bool=False, max_iter: int=100, logreg_C: float=1.0, random_state: int=42
+    model: str = RandomForestClassifier, use_scaler: bool=False, **params
 ) -> Pipeline:
     pipeline_steps = []
     if model == 'RandomForestClassifier':
         clf = RandomForestClassifier(
-                random_state=random_state
+                **params
             )
     elif model == 'ExtraTreesClassifier':
         clf = ExtraTreesClassifier(
-                random_state=random_state
+                **params
             )
     elif model == 'KNeighborsClassifier':
         clf = KNeighborsClassifier(
-                random_state=random_state
+                **params
             )
     else:
         clf = LogisticRegression(
-                random_state=random_state
+                **params
             )
     if use_scaler:
         pipeline_steps.append(("scaler", StandardScaler()))
