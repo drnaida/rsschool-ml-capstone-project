@@ -3,12 +3,14 @@ import pathlib
 from .parse_dataset import get_dataset
 from joblib import dump
 from .model_pipeline import create_pipeline
+from .feature_engineering import feature_engineering
 from sklearn.model_selection import cross_validate
 
 import mlflow
 import mlflow.sklearn
 from sklearn.metrics import accuracy_score
 
+#arguments needed for model in general
 parser = argparse.ArgumentParser(description='Train the model')
 parser.add_argument('--path-to-dataset', type=pathlib.Path, required=True, help='A path to the file with your dataset')
 parser.add_argument('--path-save-model', type=pathlib.Path, required=False, default='models/model.joblib', help='A path where to save the trained model')
@@ -16,6 +18,7 @@ parser.add_argument('--random-state', type=int, required=False, default=42, help
 parser.add_argument('--test-split-ratio', type=int, choices=range(0, 1), required=False, default=0.3, help='Test data ratio, 0.3 by default')
 parser.add_argument('--use-scaler', type=bool, required=False, default=False, help='Whether to use a scaler on data or not, False by default')
 parser.add_argument('--model', type=str, required=False, choices=['RandomForestClassifier', 'LogisticRegression', 'KNeighborsClassifier', 'ExtraTreesClassifier'], default='RandomForestClassifier', help='What machine learning model to use')
+parser.add_argument('--fetengtech', type=str, required=False, choices=['1', '2'], default='1', help='What feature engineering technique to use')
 
 #hyperparameters for random forest classifier
 parser.add_argument('--max-depth', type=int, required=False, default=None, help='hyperparameter for random forest and extratreeclassifier')
@@ -58,7 +61,8 @@ def train(
         max_iter: int=arguments.max_iter,
         C: float=arguments.C,
         penalty: str=arguments.penalty,
-        solver: str=arguments.solver
+        solver: str=arguments.solver,
+        fetengtech: str=arguments.fetengtech
 ) -> None:
     params = {
         'random_state': random_state,
@@ -85,6 +89,7 @@ def train(
     X, y = get_dataset(
         csv_path=path_to_dataset, split_into_train_test=False, random_state=random_state, test_split_ratio=test_split_ratio
     )
+    X = feature_engineering(dataset=X, feature_engineering_tech=fetengtech)
     pipeline = create_pipeline(model=model, use_scaler=use_scaler, **params)
     scoring = {'acc': 'accuracy',
                'f1_weighted': 'f1_weighted',
