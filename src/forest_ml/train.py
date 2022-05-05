@@ -17,6 +17,7 @@ parser.add_argument('--test-split-ratio', type=int, choices=range(0, 1), require
 parser.add_argument('--use-scaler', type=bool, required=False, default=False, help='Whether to use a scaler on data or not, False by default')
 parser.add_argument('--max-iter', type=int, required=False, default=100, help='What max iter to use')
 parser.add_argument('--logreg-c', type=float, required=False, default=1.0, help='What inverse of regularization strength to have (for logistical regression)')
+parser.add_argument('--model', type=str, required=False, choices=['RandomForestClassifier', 'LogisticRegression', 'KNeighborsClassifier', 'ExtraTreesClassifier'], default='RandomForestClassifier', help='What machine learning model to use')
 arguments = parser.parse_args()
 
 def train(
@@ -27,11 +28,12 @@ def train(
         use_scaler: bool=arguments.use_scaler,
         max_iter: int=arguments.max_iter,
         logreg_c: float=arguments.logreg_c,
+        model: str=arguments.model
 ) -> None:
     X, y = get_dataset(
         csv_path=path_to_dataset, split_into_train_test=False, random_state=random_state, test_split_ratio=test_split_ratio
     )
-    pipeline = create_pipeline(use_scaler=use_scaler)
+    pipeline = create_pipeline(model=model, use_scaler=use_scaler)
     scoring = {'acc': 'accuracy',
                'f1_weighted': 'f1_weighted',
                'roc_auc_ovr': 'roc_auc_ovr'}
