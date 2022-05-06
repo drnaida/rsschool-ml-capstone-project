@@ -80,6 +80,7 @@ def train() -> None:
         avg_roc_auc_ovr = np.mean(scores['test_roc_auc_ovr'])
         dump(pipeline, params['path_save_model'])
         mlflow.sklearn.log_model(sk_model=pipeline, artifact_path=os.path.dirname(params['path_save_model']))
+        mlflow.log_param("model_type", params['model'])
         params = _params_for_models(params)
         for param in params:
             mlflow.log_param(param, params[param])
