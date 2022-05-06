@@ -17,11 +17,5 @@ def feature_engineering(dataset, feature_engineering_tech):
         for column in columns:
             for degree in range(2, 5):
                 dataset[column + "_" + str(degree)] = dataset[column] ** degree
-
-        dataset["Soil_Type_sum"] = 0
-        for soil_num in range(1, 41):
-            column_name = "Soil_Type" + str(soil_num)
-            dataset["Soil_Type_sum"] += 2 ** dataset[column_name]
-            dataset.drop(column_name, inplace=True, axis=1)
         print(dataset)
         return dataset
