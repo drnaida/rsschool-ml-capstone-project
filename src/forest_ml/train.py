@@ -43,7 +43,7 @@ def get_params()->dict:
                         help='hyperparameter for random forest and extratreeclassifier')
     parser.add_argument('--max-samples', type=int, required=False, default=None,
                         help='hyperparameter for random forest and extratreeclassifier')
-    parser.add_argument('--max-features', type=int, required=False, default=None,
+    parser.add_argument('--max-features', type=str, required=False, default=None,
                         help='hyperparameter for random forest and extratreeclassifier')
 
     # knn
@@ -81,6 +81,7 @@ def train() -> None:
         dump(pipeline, params['path_save_model'])
         mlflow.sklearn.log_model(sk_model=pipeline, artifact_path=os.path.dirname(params['path_save_model']))
         mlflow.log_param("model_type", params['model'])
+        mlflow.log_param("feat_eng_type", params['fetengtech'])
         params = _params_for_models(params)
         for param in params:
             mlflow.log_param(param, params[param])
