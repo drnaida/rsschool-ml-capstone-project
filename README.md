@@ -12,3 +12,19 @@ Information for #7: In the commit named (73f16a3bab7c4a2a9c3ef29d4deb62c3f5e6fa2
 Using black
 
 poetry add --dev black
+
+**To format scripts in src (development scripts) **
+
+poetry run black src
+
+**To check whether code in src folder meets black requirements**
+
+poetry run black --check src
+
+**To format scripts in tests folder (tests scripts) **
+
+poetry run black tests
+
+**To check whether code in tests folder meets black requirements**
+
+poetry run black --check tests

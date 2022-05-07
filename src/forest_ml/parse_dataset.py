@@ -4,8 +4,13 @@ from typing import Tuple
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+
 def get_dataset(
-    csv_path: Path, split_into_train_test: bool, random_state: int, test_split_ratio: float):
+    csv_path: Path,
+    split_into_train_test: bool,
+    random_state: int,
+    test_split_ratio: float,
+):
     dataset = pd.read_csv(csv_path)
     features = dataset.drop("Cover_Type", axis=1)
     target = dataset["Cover_Type"]

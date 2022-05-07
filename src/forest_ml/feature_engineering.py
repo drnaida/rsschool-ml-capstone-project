@@ -1,11 +1,14 @@
 from sklearn.decomposition import TruncatedSVD
+
+
 def feature_engineering(dataset, feature_engineering_tech):
-    if feature_engineering_tech == '1':
-        dataset['Euclidian_Distance_To_Hydrology'] = \
-            (dataset['Horizontal_Distance_To_Hydrology'] ** 2 + \
-            dataset['Vertical_Distance_To_Hydrology']**2) ** 0.5
+    if feature_engineering_tech == "1":
+        dataset["Euclidian_Distance_To_Hydrology"] = (
+            dataset["Horizontal_Distance_To_Hydrology"] ** 2
+            + dataset["Vertical_Distance_To_Hydrology"] ** 2
+        ) ** 0.5
         return dataset
-    elif feature_engineering_tech == '2':
+    elif feature_engineering_tech == "2":
         columns = [
             "Elevation",
             "Slope",
