@@ -9,7 +9,7 @@ from sklearn.linear_model import LogisticRegression
 
 def _params_for_models(params: dict) -> dict:
     """
-    # The function deletes unnesecary params for models leaving only hyperparameters
+    # Deletes unnesecary params for models leaving only hyperparameters
     :param params: Original params from argparse
     :return: copy of original params without unnecessary args
     """

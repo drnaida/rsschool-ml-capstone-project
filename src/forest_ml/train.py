@@ -34,7 +34,7 @@ def get_params() -> dict:
         type=int,
         required=False,
         default=42,
-        help="random_state for train test split, model training and etc., must be an integer",
+        help="random_state for train test split, model training",
     )
     parser.add_argument(
         "--test-split-ratio",
@@ -190,7 +190,7 @@ def train() -> None:
         random_state=params["random_state"],
         test_split_ratio=params["test_split_ratio"],
     )
-    X = feature_engineering(dataset=X, feature_engineering_tech=params["fetengtech"])
+    X = feature_engineering(dataset=X, feature_eng_tech=params["fetengtech"])
     with mlflow.start_run():
         pipeline = create_pipeline(**params)
         scoring = {
@@ -203,8 +203,9 @@ def train() -> None:
         avg_f1 = np.mean(scores["test_f1_weighted"])
         avg_roc_auc_ovr = np.mean(scores["test_roc_auc_ovr"])
         dump(pipeline, params["path_save_model"])
+        artifact_path_for_model = os.path.dirname(params["path_save_model"])
         mlflow.sklearn.log_model(
-            sk_model=pipeline, artifact_path=os.path.dirname(params["path_save_model"])
+            sk_model=pipeline, artifact_path=artifact_path_for_model
         )
         mlflow.log_param("model_type", params["model"])
         mlflow.log_param("feat_eng_type", params["fetengtech"])
