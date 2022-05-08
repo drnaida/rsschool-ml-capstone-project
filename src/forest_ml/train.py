@@ -237,6 +237,7 @@ def train() -> None:
                 result = search.fit(X_train, y_train)
                 # get the best performing model fit on the whole training set
                 best_model = result.best_estimator_
+                best_params = result.best_params_
                 # evaluate model on the hold out dataset
                 yhat = best_model.predict(X_test)
                 pred_prob = best_model.predict_proba(X_test)
@@ -245,11 +246,35 @@ def train() -> None:
                 roc_auc_ovr = roc_auc_score(y_test, pred_prob, multi_class='ovr')
                 f1_avg = f1_score(y_test, yhat, average='weighted')
                 # store the result
-                best_models.append({'acc': acc, 'roc_auc_ovr': roc_auc_ovr, 'f1_avg': f1_avg, 'model': best_model})
+                best_models.append({'acc': acc, 'roc_auc_ovr': roc_auc_ovr, 'f1_avg': f1_avg, 'model': best_model, 'params': best_params})
 
             sorted_best_models = sorted(best_models, key=lambda d: d['acc'])
             best_model_after_nested = sorted_best_models[-1]
-
+            final_model = best_model_after_nested['model']
+            dump(final_model, params["path_save_model"])
+            #replace accuracies and save to mlflow
+            mean_acc = sum(d['acc'] for d in sorted_best_models) / len(sorted_best_models)
+            mean_roc_auc_ovr = sum(d['roc_auc_ovr'] for d in sorted_best_models) / len(sorted_best_models)
+            mean_f1_avg = sum(d['f1_avg'] for d in sorted_best_models) / len(sorted_best_models)
+            # save to mlflow the model
+            artifact_path_for_model = os.path.dirname(params["path_save_model"])
+            mlflow.sklearn.log_model(
+                sk_model=final_model, artifact_path=artifact_path_for_model
+            )
+            mlflow.log_param("model_type", params["model"])
+            mlflow.log_param("feat_eng_type", params["fetengtech"])
+            # save params
+            grid_search_parameters = best_model_after_nested['params']
+            for param in grid_search_parameters:
+                what_to_replace = str(params['model']) + '__'
+                new_param_name = param.replace(what_to_replace, '')
+                print('-========')
+                print(new_param_name, grid_search_parameters[param])
+                mlflow.log_param(new_param_name, grid_search_parameters[param])
+            # save metrics
+            mlflow.log_metric("accuracy", mean_acc)
+            mlflow.log_metric("f1_weighted", mean_roc_auc_ovr)
+            mlflow.log_metric("roc_auc_ovr", mean_f1_avg)
         ###
         else:
             pipeline = create_pipeline(**params)
