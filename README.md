@@ -49,3 +49,8 @@ poetry run flake8
 
 After that you will have to fix the mistakes with your hands. You will see an empty output
 if there is nothing to fix.
+
+## Using mypy
+
+poetry add --dev mypy
+

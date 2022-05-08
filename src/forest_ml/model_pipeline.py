@@ -21,6 +21,7 @@ def _params_for_models(params: dict) -> dict:
         "use_scaler",
         "model",
         "fetengtech",
+        "cross_validation_type"
     ]:
         if x in prepared.keys():
             del prepared[x]
@@ -41,7 +42,7 @@ def create_pipeline(**params) -> Pipeline:
         pipeline_steps.append(("scaler", StandardScaler()))
     pipeline_steps.append(
         (
-            "classifier",
+            params["model"],
             clf,
         )
     )
