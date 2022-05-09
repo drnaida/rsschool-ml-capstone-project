@@ -89,7 +89,8 @@ def nested_cross_validation(X, y, params) -> None:
     sorted_best_models = sorted(best_models, key=lambda d: d['acc'])
     best_model_after_nested = sorted_best_models[-1]
     final_model = best_model_after_nested['model']
-    dump(final_model, params["path_save_model"])
+    fitted_final_model = final_model.fit(X, y)
+    dump(fitted_final_model, params["path_save_model"])
     # replace accuracies and save to mlflow
     mean_acc = sum(d['acc'] for d in sorted_best_models) / len(sorted_best_models)
     mean_roc_auc_ovr = sum(d['roc_auc_ovr'] for d in sorted_best_models) / len(sorted_best_models)

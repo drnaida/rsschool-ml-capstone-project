@@ -1,5 +1,6 @@
 data
 mlruns
 models
+eda
 .idea
 src/forest_ml/__pycache__
