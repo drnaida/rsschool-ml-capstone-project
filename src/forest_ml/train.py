@@ -39,7 +39,7 @@ import click
 @click.option(
     "--random-state",
     default=42,
-    type=click.IntRange(0, 20),
+    type=click.IntRange(0, 1000000000),
     show_default=True,
     required=False,
     help="random_state for train test split, model training"

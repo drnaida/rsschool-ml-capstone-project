@@ -45,3 +45,20 @@ def test_error_for_invalid_test_split_ratio(
     )
     assert result.exit_code == 2
     assert "Invalid value for '--test-split-ratio'" in result.output
+
+def test_valid_parameters(
+    runner: CliRunner
+) -> None:
+    """It fails when test split ratio is greater than 1."""
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            train,
+            [
+                "--path-to-dataset",
+                r'D:\dev\rsschool-ml-capstone-project\data\train.csv',
+                "--cross-validation-type",
+                "k-fold"
+            ],
+        )
+        print(result.output)
+        assert result.exit_code == 0
