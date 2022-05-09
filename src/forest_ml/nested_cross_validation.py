@@ -11,7 +11,7 @@ from .model_pipeline import _params_for_models
 import mlflow
 import mlflow.sklearn
 
-def nested_cross_validation(X, y, params):
+def nested_cross_validation(X, y, params) -> None:
     # configure the cross-validation procedure
     cv_outer = StratifiedKFold(n_splits=4, shuffle=True, random_state=1)
     # enumerate splits

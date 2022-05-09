@@ -6,6 +6,7 @@ authors = ["AnzhelikaKurnikova <anzhelika.kurnikova@vicuesoft.com>"]
 
 [tool.poetry.scripts]
 train = "forest_ml.train:train"
+eda = "forest_ml.eda:create_eda"
 
 [tool.poetry.dependencies]
 python = "^3.9"

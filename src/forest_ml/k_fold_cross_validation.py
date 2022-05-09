@@ -7,7 +7,7 @@ from sklearn.model_selection import cross_validate
 
 import mlflow
 import mlflow.sklearn
-def k_fold_cross_validation(X, y, params):
+def k_fold_cross_validation(X, y, params) -> None:
     pipeline = create_pipeline(**params)
     scoring = {
         "acc": "accuracy",
