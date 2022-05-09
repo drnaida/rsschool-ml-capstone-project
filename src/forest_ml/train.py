@@ -100,35 +100,7 @@ def get_params() -> dict:
         help="hyperparameter for random forest and extratreeclassifier",
     )
     parser.add_argument(
-        "--min-sample-split",
-        type=int,
-        required=False,
-        default=None,
-        help="hyperparameter for random forest and extratreeclassifier",
-    )
-    parser.add_argument(
-        "--max-leaf-nodes",
-        type=int,
-        required=False,
-        default=None,
-        help="hyperparameter for random forest and extratreeclassifier",
-    )
-    parser.add_argument(
-        "--min-samples-leaf",
-        type=int,
-        required=False,
-        default=None,
-        help="hyperparameter for random forest and extratreeclassifier",
-    )
-    parser.add_argument(
         "--n-estimators",
-        type=int,
-        required=False,
-        default=None,
-        help="hyperparameter for random forest and extratreeclassifier",
-    )
-    parser.add_argument(
-        "--max-samples",
         type=int,
         required=False,
         default=None,
@@ -153,13 +125,6 @@ def get_params() -> dict:
     parser.add_argument(
         "--weights",
         type=str,
-        required=False,
-        default=None,
-        help="hyperparameter for knn",
-    )
-    parser.add_argument(
-        "--leaf_size",
-        type=int,
         required=False,
         default=None,
         help="hyperparameter for knn",

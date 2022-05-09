@@ -6,6 +6,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import roc_auc_score
+from .model_pipeline import _params_for_models
 
 import mlflow
 import mlflow.sklearn
@@ -15,6 +16,45 @@ def nested_cross_validation(X, y, params):
     cv_outer = StratifiedKFold(n_splits=4, shuffle=True, random_state=1)
     # enumerate splits
     best_models = []
+    space = dict()
+    params_for_grid_search = [
+        'n_estimators',
+        'max_depth',
+        'min_sample_split',
+        'max_features',
+        'n_neighbors',
+        'weights',
+        'max_iter',
+        'C',
+        'penalty',
+        'solver'
+    ]
+    for param in params_for_grid_search:
+        space_name = str(params['model']) + '__' + param
+        if (params['model'] == 'RandomForestClassifier') or (params['model'] == 'ExtraTreesClassifier'):
+            # random forest
+            if param == 'n_estimators':
+                space[space_name] = [10, 100, 300]
+            if param == 'max_depth':
+                space[space_name] = [3, 10, 20]
+            if param == 'max_features':
+                space[space_name] = ['log2', 'sqrt']
+        if params['model'] == 'KNeighborsClassifier':
+            if param == 'n_neighbors':
+                space[space_name] = [3, 5, 7]
+            if param == 'weights':
+                space[space_name] = ['uniform', 'distance']
+        # logistic regression
+        if params['model'] == 'LogisticRegression':
+            if param == 'max_iter':
+                space[space_name] = [100, 150, 200]
+            if param == 'C':
+                space[space_name] = [0.01, 0.1, 1]
+            if param == 'penalty':
+                space[space_name] = ['l2', 'l1']
+            if param == 'solver':
+                space[space_name] = ['liblinear', 'saga', 'sag']
+    print('space', space)
     for train_ix, test_ix in cv_outer.split(X, y):
         X_train, X_test = X.iloc[train_ix], X.iloc[test_ix]
         y_train, y_test = y[train_ix], y[test_ix]
@@ -23,10 +63,6 @@ def nested_cross_validation(X, y, params):
         # define the model
         params_new = {'model': params['model'], 'use_scaler': params['use_scaler']}
         model = create_pipeline(**params_new)
-        # define search space
-        space = dict()
-        space_name = str(params['model']) + '__' + 'n_estimators'
-        space[space_name] = [10, 100, 500]
         # define search
         search = GridSearchCV(model, space, scoring='accuracy', cv=cv_inner, refit=True)
         scoring = {
