@@ -10,9 +10,7 @@ def runner() -> CliRunner:
     return CliRunner()
 
 
-def test_error_for_invalid_random_state(
-    runner: CliRunner
-) -> None:
+def test_error_for_invalid_random_state(runner: CliRunner) -> None:
     """It fails when test split ratio is greater than 1."""
     result = runner.invoke(
         train,
@@ -20,17 +18,16 @@ def test_error_for_invalid_random_state(
             "--random-state",
             -1,
             "--path-to-dataset",
-            r'D:\dev\rsschool-ml-capstone-project\data\train.csv',
+            r"D:\dev\rsschool-ml-capstone-project\data\train.csv",
             "--cross-validation-type",
-            "k-fold"
+            "k-fold",
         ],
     )
     assert result.exit_code == 2
     assert "Invalid value for '--random-state'" in result.output
 
-def test_error_for_invalid_test_split_ratio(
-    runner: CliRunner
-) -> None:
+
+def test_error_for_invalid_test_split_ratio(runner: CliRunner) -> None:
     """It fails when test split ratio is greater than 1."""
     result = runner.invoke(
         train,
@@ -38,26 +35,25 @@ def test_error_for_invalid_test_split_ratio(
             "--test-split-ratio",
             10,
             "--path-to-dataset",
-            r'D:\dev\rsschool-ml-capstone-project\data\train.csv',
+            r"D:\dev\rsschool-ml-capstone-project\data\train.csv",
             "--cross-validation-type",
-            "k-fold"
+            "k-fold",
         ],
     )
     assert result.exit_code == 2
     assert "Invalid value for '--test-split-ratio'" in result.output
 
-def test_valid_parameters(
-    runner: CliRunner
-) -> None:
+
+def test_valid_parameters(runner: CliRunner) -> None:
     """It fails when test split ratio is greater than 1."""
     with runner.isolated_filesystem():
         result = runner.invoke(
             train,
             [
                 "--path-to-dataset",
-                r'D:\dev\rsschool-ml-capstone-project\data\train.csv',
+                r"D:\dev\rsschool-ml-capstone-project\data\train.csv",
                 "--cross-validation-type",
-                "k-fold"
+                "k-fold",
             ],
         )
         print(result.output)

@@ -1,18 +1,6 @@
-import argparse
 import pathlib
-import numpy as np
-import os
 from .parse_dataset import get_dataset
-from joblib import dump
-from .model_pipeline import create_pipeline
-from .model_pipeline import _params_for_models
 from .feature_engineering import feature_engineering
-from sklearn.model_selection import cross_validate
-from sklearn.model_selection import StratifiedKFold
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import roc_auc_score
 from .k_fold_cross_validation import k_fold_cross_validation
 from .nested_cross_validation import nested_cross_validation
 
@@ -20,13 +8,14 @@ import mlflow
 import mlflow.sklearn
 import click
 
+
 @click.command()
 @click.option(
     "--path-to-dataset",
     required=True,
     type=click.Path(exists=True, dir_okay=False, path_type=pathlib.Path),
     show_default=True,
-    help="A path to the file with your dataset"
+    help="A path to the file with your dataset",
 )
 @click.option(
     "--path-save-model",
@@ -34,7 +23,7 @@ import click
     required=False,
     type=click.Path(dir_okay=False, writable=True, path_type=pathlib.Path),
     show_default=True,
-    help="A path where to save the trained model"
+    help="A path where to save the trained model",
 )
 @click.option(
     "--random-state",
@@ -42,7 +31,7 @@ import click
     type=click.IntRange(0, 1000000000),
     show_default=True,
     required=False,
-    help="random_state for train test split, model training"
+    help="random_state for train test split, model training",
 )
 @click.option(
     "--test-split-ratio",
@@ -50,7 +39,7 @@ import click
     type=click.FloatRange(0, 1, min_open=True, max_open=True),
     show_default=True,
     required=False,
-    help="Test data ratio, 0.3 by default"
+    help="Test data ratio, 0.3 by default",
 )
 @click.option(
     "--use-scaler",
@@ -61,20 +50,15 @@ import click
     help="Whether to use a scaler on data or not, False by default",
 )
 @click.option(
-    '--cross-validation-type',
-    type=click.Choice(
-        [
-            'nested',
-            'k-fold'
-        ]
-    ),
-    default='nested',
+    "--cross-validation-type",
+    type=click.Choice(["nested", "k-fold"]),
+    default="nested",
     show_default=True,
     help="What type of cross-validation to use",
-    required=False
+    required=False,
 )
 @click.option(
-    '--model',
+    "--model",
     type=click.Choice(
         [
             "RandomForestClassifier",
@@ -83,23 +67,23 @@ import click
             "ExtraTreesClassifier",
         ]
     ),
-    default='RandomForestClassifier',
+    default="RandomForestClassifier",
     show_default=True,
     help="What machine learning model to use",
-    required=False
+    required=False,
 )
 @click.option(
-    '--fetengtech',
+    "--fetengtech",
     type=click.Choice(
         [
             "1",
             "2",
         ]
     ),
-    default='1',
+    default="1",
     show_default=True,
     help="What feature engineering technique to use",
-    required=False
+    required=False,
 )
 @click.option(
     "--max-depth",
@@ -222,7 +206,7 @@ def train(
     )
     X = feature_engineering(dataset=X, feature_eng_tech=params["fetengtech"])
     with mlflow.start_run():
-        if params['cross_validation_type'] == 'nested':
+        if params["cross_validation_type"] == "nested":
             nested_cross_validation(X, y, params)
         ###
         else:

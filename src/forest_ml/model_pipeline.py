@@ -21,13 +21,14 @@ def _params_for_models(params: dict) -> dict:
         "use_scaler",
         "model",
         "fetengtech",
-        "cross_validation_type"
+        "cross_validation_type",
     ]
 
     for x in params_to_delete:
         if x in prepared.keys():
             del prepared[x]
     return prepared
+
 
 def create_pipeline(**params) -> Pipeline:
     pipeline_steps = []

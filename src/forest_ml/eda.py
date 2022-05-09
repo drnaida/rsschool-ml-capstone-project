@@ -18,7 +18,7 @@ def get_params() -> dict:
 
 def create_eda() -> None:
     params = dict(filter(lambda x: x[1] is not None, get_params().items()))
-    df = pd.read_csv(params['path_to_dataset'])
+    df = pd.read_csv(params["path_to_dataset"])
     profile = ProfileReport(
         df, title="Pandas Profiling Report Forest Dataset", explorative=True
     )

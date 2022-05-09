@@ -7,6 +7,8 @@ from sklearn.model_selection import cross_validate
 
 import mlflow
 import mlflow.sklearn
+
+
 def k_fold_cross_validation(X, y, params) -> None:
     pipeline = create_pipeline(**params)
     scoring = {
@@ -20,9 +22,7 @@ def k_fold_cross_validation(X, y, params) -> None:
     avg_roc_auc_ovr = np.mean(scores["test_roc_auc_ovr"])
     dump(pipeline, params["path_save_model"])
     artifact_path_for_model = os.path.dirname(params["path_save_model"])
-    mlflow.sklearn.log_model(
-        sk_model=pipeline, artifact_path=artifact_path_for_model
-    )
+    mlflow.sklearn.log_model(sk_model=pipeline, artifact_path=artifact_path_for_model)
     mlflow.log_param("model_type", params["model"])
     mlflow.log_param("feat_eng_type", params["fetengtech"])
     params = _params_for_models(params)
