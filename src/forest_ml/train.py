@@ -200,9 +200,6 @@ def train(
 
     X, y = get_dataset(
         csv_path=params["path_to_dataset"],
-        split_into_train_test=False,
-        random_state=params["random_state"],
-        test_split_ratio=params["test_split_ratio"],
     )
     X = feature_engineering(dataset=X, feature_eng_tech=params["fetengtech"])
     with mlflow.start_run():

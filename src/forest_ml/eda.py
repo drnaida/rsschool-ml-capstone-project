@@ -4,7 +4,7 @@ import pathlib
 import argparse
 
 
-def get_params() -> dict:
+def get_params() -> dict[str, str]:
     parser = argparse.ArgumentParser(description="Create the EDA")
     parser.add_argument(
         "--path-to-dataset",
