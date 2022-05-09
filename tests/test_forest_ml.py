@@ -19,7 +19,11 @@ def test_error_for_invalid_test_split_ratio(
         [
             "--random-state",
             -1,
+            "--path-to-dataset",
+            r'D:\dev\rsschool-ml-capstone-project\data\train.csv',
+            "--cross-validation-type",
+            "k-fold"
         ],
     )
     assert result.exit_code == 2
-    assert "Invalid value for '--test-split-ratio'" in result.output
+    assert "Invalid value for '--random-state'" in result.output
