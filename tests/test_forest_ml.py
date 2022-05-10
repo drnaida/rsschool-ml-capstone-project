@@ -14,19 +14,15 @@ def runner() -> CliRunner:
 
 def test_error_for_invalid_random_state(runner: CliRunner) -> None:
     """It fails when test split ratio is greater than 1."""
-    cwd = os.getcwd()
-    p = pathlib.Path(cwd)
-    path_to_dataset = str(p) + "/tests/test_sample.csv"
-    path_to_save_model = str(p) + "/data/model.joblib"
     result = runner.invoke(
         train,
         [
             "--random-state",
             -1,
             "--path-to-dataset",
-            path_to_dataset,
+            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--path-save-model",
-            path_to_save_model
+            r"D:/dev/rsschool-ml-capstone-project/data/model.joblib",
         ],
     )
     assert result.exit_code == 2
@@ -35,23 +31,33 @@ def test_error_for_invalid_random_state(runner: CliRunner) -> None:
 
 def test_error_for_invalid_test_split_ratio(runner: CliRunner) -> None:
     """It fails when test split ratio is greater than 1."""
-    cwd = os.getcwd()
-    p = pathlib.Path(cwd)
-    path_to_dataset = str(p) + "/tests/test_sample.csv"
-    path_to_save_model = str(p) + "/data/model.joblib"
     result = runner.invoke(
         train,
         [
             "--test-split-ratio",
             10,
             "--path-to-dataset",
-            path_to_dataset,
+            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--path-save-model",
-            path_to_save_model
+            r"D:/dev/rsschool-ml-capstone-project/data/model.joblib",
         ],
     )
     assert result.exit_code == 2
     assert "Invalid value for '--test-split-ratio'" in result.output
+
+def test_error_for_invalid_dataset_path(runner: CliRunner) -> None:
+    """It fails when test split ratio is greater than 1."""
+    result = runner.invoke(
+        train,
+        [
+            "--path-to-dataset",
+            r"D:/dev/rsschool-ml-capstone-project/data/train.sv",
+            "--path-save-model",
+            r"D:/dev/rsschool-ml-capstone-project/data/model.joblib",
+        ],
+    )
+    assert result.exit_code == 2
+    assert "Invalid value for '--path-to-dataset'" in result.output
 
 
 def test_valid_parameters(runner: CliRunner) -> None:
