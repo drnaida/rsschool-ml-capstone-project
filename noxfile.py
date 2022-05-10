@@ -1,13 +1,10 @@
 """Nox sessions."""
 
-import tempfile
-from typing import Any
-
 import nox
 from nox.sessions import Session
 
 
-nox.options.sessions = "black", "mypy", "tests"
+nox.options.sessions = "black", "lint", "mypy", "tests"
 locations = "src", "noxfile.py"
 
 
@@ -37,6 +34,5 @@ def mypy(session: Session) -> None:
 @nox.session(python="3.9")
 def tests(session: Session) -> None:
     """Run the test suite."""
-    args = session.posargs
     session.install("poetry")
     session.run("poetry", "run", "pytest")

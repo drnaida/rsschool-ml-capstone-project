@@ -11,13 +11,21 @@ and 2 machine learning models. Overall 12 models.
 
 **To underline, with the respect to accuracy, the best model s you can see on the screenshot is a RandomForestClassifier with max_features='sqrt', n_estimators=100, max_depth=5 and feature engineering technique #2**
 
-## #11 **To underline, in my code in addition to checking that my script works on valid data, I also load the saved model and check that accuracy is in the valid range (by that I check that the model is saved without any mistakes)**
+## #11 Screenshot that test pass
+
+![img.png](11.png)
 
 ## #12 
 
+![img.png](12.png)
+
 ## #13
 
-## #14
+![img.png](13.png)
+
+## #14 Screenshot that nox session works
+
+![img.png](14.png)
 
 ## #15
 
@@ -205,6 +213,12 @@ poetry run pytest
 # Development WITH nox
 
 1. Download nox through pip [use the link](https://nox.thea.codes/en/stable/)
+
+2. Download packages through poetry **very important**
+
+```
+poetry install
+```
 
 3. Run nox
 ```

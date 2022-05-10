@@ -11,10 +11,7 @@ import pandas as pd
 import mlflow
 import mlflow.sklearn
 
-import pickle
-import numpy as np
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import cross_val_score
 
 
 def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> None:
