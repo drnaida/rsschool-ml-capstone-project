@@ -101,6 +101,8 @@ poetry run train --path-to-dataset D:\dev\rsschool-ml-capstone-project\data\trai
 
 # Use eda.py (make an explaratory data analysis using pandas-profiling)
 
+It creates a EDA using pandas-profiling
+
 To run the eda.py, type in the console at the root of the project **but do not forget to change the paths to dataset**:
 ```
 poetry run eda --path-to-dataset D:\dev\rsschool-ml-capstone-project\data\train.csv
@@ -114,10 +116,10 @@ It generates a sample from the dataset for tests.
 
 In the repository that you cloned there already a test_sample.csv in the tests folder.
 
-However, if for some reason you want to generate a new sample for tests, feel free to use the command **but do not forget to change the paths to dataset and where to store the sample**.
+However, if for some reason you want to generate a new sample for tests, feel free to use the command **but do not forget to change the paths to dataset**.
 
 ```
-poetry run sample --path-to-dataset D:\dev\rsschool-ml-capstone-project\data\train.csv --path-to-save-sample D:\dev\rsschool-ml-capstone-project\tests\test_sample.csv
+poetry run sample --path-to-dataset D:\dev\rsschool-ml-capstone-project\data\train.csv
 ```
 
 # Development (without nox)

@@ -1,7 +1,7 @@
 import pandas as pd
-from pandas_profiling import ProfileReport
 import pathlib
 import argparse
+import os
 
 
 def get_params() -> dict[str, str]:
@@ -11,12 +11,6 @@ def get_params() -> dict[str, str]:
         type=pathlib.Path,
         required=True,
         help="A path to the file with your dataset",
-    )
-    parser.add_argument(
-        "--path-to-save-sample",
-        type=pathlib.Path,
-        required=True,
-        help="A path where to save the sample",
     )
     arguments = parser.parse_args()
     return arguments.__dict__
@@ -28,4 +22,7 @@ def create_sample_from_dataset() -> None:
     print(df.shape)
     sample = df.sample(n=3000, random_state=42)
     print(sample.shape)
-    sample.to_csv(params["path_to_save_sample"], index=False)
+    cwd = os.getcwd()
+    p = pathlib.Path(cwd)
+    path_to_sample = str(p) + "/tests/test_sample.csv"
+    sample.to_csv(path_to_sample, index=False)
