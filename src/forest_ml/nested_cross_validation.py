@@ -3,7 +3,6 @@ from joblib import dump
 from .model_pipeline import create_pipeline
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import roc_auc_score
 from typing import Any
@@ -135,7 +134,7 @@ def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> Non
     mlflow.log_metric("f1_weighted", mean_roc_auc_ovr)
     mlflow.log_metric("roc_auc_ovr", mean_f1_avg)
 
-    ### some tests
+    # some tests
     features = X
     target = y
     print(params["path_save_model"])

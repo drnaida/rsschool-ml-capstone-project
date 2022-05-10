@@ -15,6 +15,12 @@ and 2 machine learning models. Overall 12 models.
 
 ## #12 
 
+## #13
+
+## #14
+
+## #15
+
 # Usage
 
 1. Clone this repository
@@ -198,12 +204,7 @@ poetry run pytest
 
 # Development WITH nox
 
-1. Please download the dev packages if you haven't done it before:
-
-```
-poetry install
-```
-2. Download nox through pip
+1. Download nox through pip [use the link](https://nox.thea.codes/en/stable/)
 
 3. Run nox
 ```

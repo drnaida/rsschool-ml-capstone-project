@@ -1,6 +1,5 @@
 """Nox sessions."""
 
-import tempfile
 from typing import Any
 
 import nox
@@ -12,10 +11,6 @@ locations = "src", "noxfile.py"
 
 
 def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> None:
-    """Install packages constrained by Poetry's lock file.
-    By default newest versions of packages are installed,
-    but we use versions from poetry.lock instead to guarantee reproducibility of sessions.
-    """
     session.install("poetry")
     session.run("poetry", "install")
 
@@ -27,12 +22,14 @@ def black(session: Session) -> None:
     install_with_constraints(session, "black")
     session.run("poetry", "run", "black", *args)
 
+
 @nox.session(python="3.9")
 def flake8(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or locations
     install_with_constraints(session, "flake8")
     session.run("poetry", "run", "flake8", *args)
+
 
 @nox.session(python="3.9")
 def mypy(session: Session) -> None:
@@ -46,6 +43,6 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     args = session.posargs
-    session.run("poetry", "install", "--no-dev", external=True)
     install_with_constraints(session, "pytest")
+    #session.run("poetry", "install", "--no-dev", external=True)
     session.run("poetry", "run", "pytest", *args)
