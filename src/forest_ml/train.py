@@ -88,7 +88,7 @@ import click
 @click.option(
     "--max-depth",
     default=None,
-    type=int,
+    type=click.IntRange(1, 1000000000),
     show_default=True,
     required=False,
     help="hyperparameter for random forest and extratreeclassifier",
@@ -96,7 +96,7 @@ import click
 @click.option(
     "--n-estimators",
     default=None,
-    type=int,
+    type=click.IntRange(0, 1000000000),
     show_default=True,
     required=False,
     help="hyperparameter for random forest and extratreeclassifier",
@@ -104,7 +104,13 @@ import click
 @click.option(
     "--max-features",
     default=None,
-    type=str,
+    type=click.Choice(
+        [
+            "auto",
+            "sqrt",
+            "log2",
+        ]
+    ),
     show_default=True,
     required=False,
     help="hyperparameter for random forest and extratreeclassifier",
@@ -112,7 +118,7 @@ import click
 @click.option(
     "--n-neighbors",
     default=None,
-    type=int,
+    type=click.IntRange(0, 1000000000),
     show_default=True,
     required=False,
     help="hyperparameter for knn",
@@ -120,7 +126,12 @@ import click
 @click.option(
     "--weights",
     default=None,
-    type=str,
+    type=click.Choice(
+        [
+            "uniform",
+            "distance",
+        ]
+    ),
     show_default=True,
     required=False,
     help="hyperparameter for knn",
@@ -128,7 +139,7 @@ import click
 @click.option(
     "--max-iter",
     default=None,
-    type=int,
+    type=click.IntRange(0, 1000000000),
     show_default=True,
     required=False,
     help="hyperparameter for logistic regression",
@@ -144,7 +155,14 @@ import click
 @click.option(
     "--penalty",
     default=None,
-    type=str,
+    type=click.Choice(
+        [
+            "l1",
+            "l2",
+            "elasticnet",
+            'none'
+        ]
+    ),
     show_default=True,
     required=False,
     help="hyperparameter for logistic regression",
@@ -152,7 +170,15 @@ import click
 @click.option(
     "--solver",
     default=None,
-    type=str,
+    type=click.Choice(
+        [
+            "newton-cg",
+            "lbfgs",
+            "liblinear",
+            'sag',
+            'saga'
+        ]
+    ),
     show_default=True,
     required=False,
     help="hyperparameter for logistic regression",
