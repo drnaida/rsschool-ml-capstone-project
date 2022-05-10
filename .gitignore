@@ -4,3 +4,5 @@ models
 eda
 .idea
 src/forest_ml/__pycache__
+tests/__pycache__
+__pycache__

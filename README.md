@@ -101,12 +101,24 @@ poetry run train --path-to-dataset D:\dev\rsschool-ml-capstone-project\data\trai
 
 # Use eda.py (make an explaratory data analysis using pandas-profiling)
 
-To run the eda.py, type in the console at the root of the project:
+To run the eda.py, type in the console at the root of the project **but do not forget to change the paths to dataset**:
 ```
 poetry run eda --path-to-dataset D:\dev\rsschool-ml-capstone-project\data\train.csv
 ```
 
 The only argument that you must specify is --path-to-dataset.
+
+# Use create_sample_from_dataset.py
+
+It generates a sample from the dataset for tests.
+
+In the repository that you cloned there already a test_sample.csv in the tests folder.
+
+However, if for some reason you want to generate a new sample for tests, feel free to use the command **but do not forget to change the paths to dataset and where to store the sample**.
+
+```
+poetry run sample --path-to-dataset D:\dev\rsschool-ml-capstone-project\data\train.csv --path-to-save-sample D:\dev\rsschool-ml-capstone-project\tests\test_sample.csv
+```
 
 # Development (without nox)
 
@@ -119,10 +131,6 @@ poetry install
 **To underline, all of the commands must be executed at the root of the project**
 
 ## Using black
-
-```
-poetry add --dev black
-```
 
 **To format scripts in src (development scripts)**
 
@@ -157,16 +165,10 @@ because I ran into conflicts between black and flake8 (flake8 would tell me that
 but when I put arguments of the function that exceeded the line limit on the new line black
 would tell me that it is not good)
 
-**Download flake8**
-
-```
-poetry add --dev flake8
-```
-
 **Use flake8 / see what errors you have**
 
 ```
-poetry run flake8
+poetry run flake8 src tests
 ```
 
 After that you will have to fix the mistakes with your hands. You will see an empty output
@@ -175,15 +177,19 @@ if there is nothing to fix.
 ## Using mypy
 
 ```
-poetry add --dev mypy
+poetry run mypy src
 ```
 
 # Development WITH nox
 
-Please download the dev packages if you haven't done it before:
+1. Please download the dev packages if you haven't done it before:
 
 ```
 poetry install
 ```
+2. Download nox through pip
 
-
+3. Run nox
+```
+nox
+```
