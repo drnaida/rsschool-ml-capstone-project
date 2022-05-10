@@ -155,14 +155,7 @@ import click
 @click.option(
     "--penalty",
     default=None,
-    type=click.Choice(
-        [
-            "l1",
-            "l2",
-            "elasticnet",
-            'none'
-        ]
-    ),
+    type=click.Choice(["l1", "l2", "elasticnet", "none"]),
     show_default=True,
     required=False,
     help="hyperparameter for logistic regression",
@@ -170,15 +163,7 @@ import click
 @click.option(
     "--solver",
     default=None,
-    type=click.Choice(
-        [
-            "newton-cg",
-            "lbfgs",
-            "liblinear",
-            'sag',
-            'saga'
-        ]
-    ),
+    type=click.Choice(["newton-cg", "lbfgs", "liblinear", "sag", "saga"]),
     show_default=True,
     required=False,
     help="hyperparameter for logistic regression",
@@ -221,7 +206,9 @@ def train(
         "penalty": penalty,
         "solver": solver,
     }
-    params: dict[str, Any] = dict(filter(lambda x: x[1] is not None, params_list.items()))
+    params: dict[str, Any] = dict(
+        filter(lambda x: x[1] is not None, params_list.items())
+    )
     print("params", params)
     path: pathlib.Path = params["path_to_dataset"]
     X, y = get_dataset(

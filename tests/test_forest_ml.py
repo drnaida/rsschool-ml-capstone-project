@@ -3,6 +3,11 @@ import pytest
 import click
 import os
 import pathlib
+import pandas as pd
+import pickle
+import numpy as np
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
 from forest_ml.train import train
 
 
@@ -243,7 +248,77 @@ def test_valid_parameters(runner: CliRunner) -> None:
                 "--cross-validation-type",
                 "k-fold",
                 "--path-save-model",
-                path_to_save_model
+                path_to_save_model,
+                "--fetengtech",
+                '1'
             ],
         )
+        dataset = pd.read_csv(path_to_dataset)
+        features = dataset.drop("Cover_Type", axis=1)
+        target = dataset["Cover_Type"]
+        loaded_model = pickle.load(open(path_to_save_model, 'rb'))
+        accuracy = cross_val_score(loaded_model, features, target, scoring='accuracy', cv=5)
+        avg_accuracy = np.mean(accuracy)
         assert result.exit_code == 0
+        assert 0 < avg_accuracy < 1
+
+def test_valid_parameters_2(runner: CliRunner) -> None:
+    """It fails when test split ratio is greater than 1."""
+    runner = CliRunner()
+    cwd = os.getcwd()
+    p = pathlib.Path(cwd)
+    path_to_dataset = str(p) + "/tests/test_sample.csv"
+    path_to_save_model = str(p) + "/data/model.joblib"
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            train,
+            [
+                "--path-to-dataset",
+                path_to_dataset,
+                "--cross-validation-type",
+                "k-fold",
+                "--path-save-model",
+                path_to_save_model,
+                "--fetengtech",
+                '2'
+            ],
+        )
+        dataset = pd.read_csv(path_to_dataset)
+        features = dataset.drop("Cover_Type", axis=1)
+        target = dataset["Cover_Type"]
+        loaded_model = pickle.load(open(path_to_save_model, 'rb'))
+        accuracy = cross_val_score(loaded_model, features, target, scoring='accuracy', cv=5)
+        avg_accuracy = np.mean(accuracy)
+        assert result.exit_code == 0
+        assert 0 < avg_accuracy < 1
+
+# #comment the tests below if tests run for 2 long
+# def test_valid_parameters_3(runner: CliRunner) -> None:
+#     """It fails when test split ratio is greater than 1."""
+#     runner = CliRunner()
+#     cwd = os.getcwd()
+#     p = pathlib.Path(cwd)
+#     path_to_dataset = str(p) + "/tests/test_sample.csv"
+#     path_to_save_model = str(p) + "/data/model.joblib"
+#     with runner.isolated_filesystem():
+#         result = runner.invoke(
+#             train,
+#             [
+#                 "--path-to-dataset",
+#                 path_to_dataset,
+#                 "--cross-validation-type",
+#                 "nested",
+#                 "--path-save-model",
+#                 path_to_save_model,
+#                 "--fetengtech",
+#                 '2'
+#             ],
+#         )
+#         dataset = pd.read_csv(path_to_dataset)
+#         features = dataset.drop("Cover_Type", axis=1)
+#         target = dataset["Cover_Type"]
+#         loaded_model = pickle.load(open(path_to_save_model, 'rb'))
+#         accuracy = cross_val_score(loaded_model, features, target, scoring='accuracy', cv=5)
+#         avg_accuracy = np.mean(accuracy)
+#         assert result.exit_code == 0
+#         assert 0 < avg_accuracy < 1

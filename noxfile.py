@@ -7,36 +7,45 @@ import nox
 from nox.sessions import Session
 
 
-nox.options.sessions = "black", "mypy", "tests"
+nox.options.sessions = "black", "flake8", "mypy", "tests"
 locations = "src", "noxfile.py"
+
+
+def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> None:
+    """Install packages constrained by Poetry's lock file.
+    By default newest versions of packages are installed,
+    but we use versions from poetry.lock instead to guarantee reproducibility of sessions.
+    """
+    session.install("poetry")
+    session.run("poetry", "install")
 
 
 @nox.session(python="3.9")
 def black(session: Session) -> None:
     """Run black code formatter."""
     args = session.posargs or locations
-    session.install("black")
-    session.run("black", *args)
-
+    install_with_constraints(session, "black")
+    session.run("poetry", "run", "black", *args)
 
 @nox.session(python="3.9")
-def lint(session: Session) -> None:
+def flake8(session: Session) -> None:
+    """Type-check using mypy."""
     args = session.posargs or locations
-    session.install("flake8")
-    session.run("flake8", *args)
-
+    install_with_constraints(session, "flake8")
+    session.run("poetry", "run", "flake8", *args)
 
 @nox.session(python="3.9")
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or locations
-    session.install("mypy")
-    session.run("mypy", *args)
+    install_with_constraints(session, "mypy")
+    session.run("poetry", "run", "mypy", *args)
 
 
 @nox.session(python="3.9")
 def tests(session: Session) -> None:
     """Run the test suite."""
     args = session.posargs
-    session.install("poetry")
-    session.run("poetry", "run", "pytest")
+    session.run("poetry", "install", "--no-dev", external=True)
+    install_with_constraints(session, "pytest")
+    session.run("poetry", "run", "pytest", *args)

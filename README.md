@@ -11,7 +11,9 @@ and 2 machine learning models. Overall 12 models.
 
 **To underline, with the respect to accuracy, the best model s you can see on the screenshot is a RandomForestClassifier with max_features='sqrt', n_estimators=100, max_depth=5 and feature engineering technique #2**
 
+## #11 **To underline, in my code in addition to checking that my script works on valid data, I also load the saved model and check that accuracy is in the valid range (by that I check that the model is saved without any mistakes)**
 
+## #12 
 
 # Usage
 
@@ -184,6 +186,14 @@ if there is nothing to fix.
 
 ```
 poetry run mypy src
+```
+
+## Using tests
+
+**To underline, I check multiple combinations of valid parameters. If tests run for 2 long for you, just comment some of the tests**
+
+```
+poetry run pytest
 ```
 
 # Development WITH nox
