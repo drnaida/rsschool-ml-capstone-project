@@ -6,17 +6,19 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import roc_auc_score
+from typing import Any
+import pandas as pd
 
 import mlflow
 import mlflow.sklearn
 
 
-def nested_cross_validation(X, y, params) -> None:
+def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> None:
     # configure the cross-validation procedure
     cv_outer = StratifiedKFold(n_splits=4, shuffle=True, random_state=1)
     # enumerate splits
-    best_models = []
-    space = dict()
+    best_models: list[dict[str, Any]] = []
+    space: dict[str, Any] = {}
     params_for_grid_search = [
         "n_estimators",
         "max_depth",
@@ -58,7 +60,7 @@ def nested_cross_validation(X, y, params) -> None:
                 space[space_name] = ["liblinear", "saga", "sag"]
     print("space", space)
     for train_ix, test_ix in cv_outer.split(X, y):
-        X_train, X_test = X.iloc[train_ix], X.iloc[test_ix]
+        X_train, X_test = X[train_ix], X[test_ix]
         y_train, y_test = y[train_ix], y[test_ix]
         # configure the cross-validation procedure
         cv_inner = StratifiedKFold(n_splits=4, shuffle=True, random_state=1)
@@ -89,7 +91,7 @@ def nested_cross_validation(X, y, params) -> None:
             }
         )
 
-    sorted_best_models = sorted(best_models, key=lambda d: d["acc"])
+    sorted_best_models = sorted(best_models, key=lambda d: d["acc"])  #type: ignore
     best_model_after_nested = sorted_best_models[-1]
     final_model = best_model_after_nested["model"]
     fitted_final_model = final_model.fit(X, y)

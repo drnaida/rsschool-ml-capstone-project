@@ -5,9 +5,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
+from typing import Any
 
 
-def _params_for_models(params: dict) -> dict:
+def _params_for_models(params: dict[str, Any]) -> dict[str, Any]:
     """
     # Deletes unnesecary params for models leaving only hyperparameters
     :param params: Original params from argparse
@@ -30,7 +31,7 @@ def _params_for_models(params: dict) -> dict:
     return prepared
 
 
-def create_pipeline(**params) -> Pipeline:
+def create_pipeline(**params: Any) -> Pipeline:
     pipeline_steps = []
     if params["model"] == "RandomForestClassifier":
         clf = RandomForestClassifier(**_params_for_models(params=params))

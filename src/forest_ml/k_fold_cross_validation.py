@@ -4,12 +4,14 @@ from joblib import dump
 from .model_pipeline import create_pipeline
 from .model_pipeline import _params_for_models
 from sklearn.model_selection import cross_validate
+import pandas as pd
+from typing import Any
 
 import mlflow
 import mlflow.sklearn
 
 
-def k_fold_cross_validation(X, y, params) -> None:
+def k_fold_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> None:
     pipeline = create_pipeline(**params)
     scoring = {
         "acc": "accuracy",

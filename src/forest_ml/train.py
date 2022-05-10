@@ -3,7 +3,7 @@ from .parse_dataset import get_dataset
 from .feature_engineering import feature_engineering
 from .k_fold_cross_validation import k_fold_cross_validation
 from .nested_cross_validation import nested_cross_validation
-
+from typing import Any
 import mlflow
 import mlflow.sklearn
 import click
@@ -195,13 +195,14 @@ def train(
         "penalty": penalty,
         "solver": solver,
     }
-    params = dict(filter(lambda x: x[1] is not None, params_list.items()))
+    params: dict[str, Any] = dict(filter(lambda x: x[1] is not None, params_list.items()))
     print("params", params)
-
+    path: pathlib.Path = params["path_to_dataset"]
     X, y = get_dataset(
-        csv_path=params["path_to_dataset"],
+        csv_path=path,
     )
-    X = feature_engineering(dataset=X, feature_eng_tech=params["fetengtech"])
+    feteng: str = params["fetengtech"]
+    X = feature_engineering(dataset=X, feature_eng_tech=feteng)
     with mlflow.start_run():
         if params["cross_validation_type"] == "nested":
             nested_cross_validation(X, y, params)

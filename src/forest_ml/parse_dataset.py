@@ -7,7 +7,7 @@ from typing import Tuple
 
 def get_dataset(
     csv_path: Path,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> Tuple[pd.DataFrame, pd.Series]:
     dataset = pd.read_csv(csv_path)
     features = dataset.drop("Cover_Type", axis=1)
     target = dataset["Cover_Type"]
