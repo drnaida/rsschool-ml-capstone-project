@@ -13,7 +13,6 @@ import mlflow.sklearn
 
 def k_fold_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> None:
     pipeline = create_pipeline(**params)
-    print(pipeline)
     scoring = {
         "acc": "accuracy",
         "f1_weighted": "f1_weighted",

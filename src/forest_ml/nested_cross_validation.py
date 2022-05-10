@@ -40,20 +40,12 @@ def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> Non
         if (params["model"] == "RandomForestClassifier") or (
             params["model"] == "ExtraTreesClassifier"
         ):
-            # random forest
-            # if param == "n_estimators":
-            #     space[space_name] = [10, 100, 300]
-            # if param == "max_depth":
-            #     space[space_name] = [3, 10, 20]
-            # if param == "max_features":
-            #     space[space_name] = ["log2", "sqrt"]
-            # random forest
             if param == "n_estimators":
-                space[space_name] = [10]
+                space[space_name] = [10, 100, 300]
             if param == "max_depth":
-                space[space_name] = [3]
+                space[space_name] = [3, 10, 20]
             if param == "max_features":
-                space[space_name] = ["log2"]
+                space[space_name] = ["log2", "sqrt"]
         if params["model"] == "KNeighborsClassifier":
             if param == "n_neighbors":
                 space[space_name] = [3, 5, 7]
@@ -105,7 +97,6 @@ def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> Non
     sorted_best_models = sorted(best_models, key=lambda d: d["acc"])  # type: ignore
     best_model_after_nested = sorted_best_models[-1]
     final_model = best_model_after_nested["model"]
-    print(final_model)
     final_model.fit(X, y)
     dump(final_model, params["path_save_model"])
     # replace accuracies and save to mlflow
@@ -133,13 +124,3 @@ def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> Non
     mlflow.log_metric("accuracy", mean_acc)
     mlflow.log_metric("f1_weighted", mean_roc_auc_ovr)
     mlflow.log_metric("roc_auc_ovr", mean_f1_avg)
-
-    # some tests
-    features = X
-    target = y
-    print(params["path_save_model"])
-    loaded_model = pickle.load(open(params["path_save_model"], "rb"))
-    accuracy = cross_val_score(loaded_model, features, target, scoring="accuracy", cv=5)
-    avg_accuracy = np.mean(accuracy)
-    assert result.exit_code == 0
-    assert 0 < avg_accuracy < 1
