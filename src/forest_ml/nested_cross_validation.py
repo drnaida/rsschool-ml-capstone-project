@@ -96,28 +96,29 @@ def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> Non
     final_model = best_model_after_nested["model"]
     final_model.fit(X, y)
     dump(final_model, params["path_save_model"])
-    # replace accuracies and save to mlflow
-    mean_acc = sum(d["acc"] for d in sorted_best_models) / len(sorted_best_models)
-    mean_roc_auc_ovr = sum(d["roc_auc_ovr"] for d in sorted_best_models) / len(
-        sorted_best_models
-    )
-    mean_f1_avg = sum(d["f1_avg"] for d in sorted_best_models) / len(sorted_best_models)
-    # save to mlflow the model
-    artifact_path_for_model = os.path.dirname(params["path_save_model"])
-    mlflow.sklearn.log_model(
-        sk_model=final_model, artifact_path=artifact_path_for_model
-    )
-    mlflow.log_param("model_type", params["model"])
-    mlflow.log_param("feat_eng_type", params["fetengtech"])
-    # save params
-    grid_search_parameters = best_model_after_nested["params"]
-    for param in grid_search_parameters:
-        what_to_replace = str(params["model"]) + "__"
-        new_param_name = param.replace(what_to_replace, "")
-        print("-========")
-        print(new_param_name, grid_search_parameters[param])
-        mlflow.log_param(new_param_name, grid_search_parameters[param])
-    # save metrics
-    mlflow.log_metric("accuracy", mean_acc)
-    mlflow.log_metric("f1_weighted", mean_roc_auc_ovr)
-    mlflow.log_metric("roc_auc_ovr", mean_f1_avg)
+    if params["use_mlflow"]:
+        # replace accuracies and save to mlflow
+        mean_acc = sum(d["acc"] for d in sorted_best_models) / len(sorted_best_models)
+        mean_roc_auc_ovr = sum(d["roc_auc_ovr"] for d in sorted_best_models) / len(
+            sorted_best_models
+        )
+        mean_f1_avg = sum(d["f1_avg"] for d in sorted_best_models) / len(sorted_best_models)
+        # save to mlflow the model
+        artifact_path_for_model = os.path.dirname(params["path_save_model"])
+        mlflow.sklearn.log_model(
+            sk_model=final_model, artifact_path=artifact_path_for_model
+        )
+        mlflow.log_param("model_type", params["model"])
+        mlflow.log_param("feat_eng_type", params["fetengtech"])
+        # save params
+        grid_search_parameters = best_model_after_nested["params"]
+        for param in grid_search_parameters:
+            what_to_replace = str(params["model"]) + "__"
+            new_param_name = param.replace(what_to_replace, "")
+            print("-========")
+            print(new_param_name, grid_search_parameters[param])
+            mlflow.log_param(new_param_name, grid_search_parameters[param])
+        # save metrics
+        mlflow.log_metric("accuracy", mean_acc)
+        mlflow.log_metric("f1_weighted", mean_roc_auc_ovr)
+        mlflow.log_metric("roc_auc_ovr", mean_f1_avg)

@@ -8,7 +8,6 @@ import numpy as np
 from sklearn.model_selection import cross_val_score
 from forest_ml.train import train
 
-
 @pytest.fixture
 def runner() -> CliRunner:
     """Fixture providing click runner."""
@@ -217,7 +216,7 @@ def test_valid_parameters(runner: CliRunner) -> None:
     p = pathlib.Path(cwd)
     path_to_dataset = str(p) + "/tests/test_sample.csv"
     path_to_save_model = str(p) + "/tests/model.joblib"
-    with runner.isolated_filesystem():
+    with runner.isolated_filesystem() as td:
         result = runner.invoke(
             train,
             [
@@ -229,6 +228,8 @@ def test_valid_parameters(runner: CliRunner) -> None:
                 path_to_save_model,
                 "--fetengtech",
                 "1",
+                "--use-mlflow",
+                False
             ],
         )
         dataset = pd.read_csv(path_to_dataset)
@@ -249,8 +250,8 @@ def test_valid_parameters_2(runner: CliRunner) -> None:
     cwd = os.getcwd()
     p = pathlib.Path(cwd)
     path_to_dataset = str(p) + "/tests/test_sample.csv"
+    path_to_save_model = str(p) + "/tests/model.joblib"
     with runner.isolated_filesystem() as td:
-        path_to_save_model = str(td) + "model.joblib"
         result = runner.invoke(
             train,
             [
@@ -262,6 +263,8 @@ def test_valid_parameters_2(runner: CliRunner) -> None:
                 path_to_save_model,
                 "--fetengtech",
                 "2",
+                "--use-mlflow",
+                False
             ],
         )
         dataset = pd.read_csv(path_to_dataset)
