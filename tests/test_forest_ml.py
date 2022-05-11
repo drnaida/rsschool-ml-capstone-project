@@ -22,8 +22,6 @@ def test_error_for_invalid_random_state(runner: CliRunner) -> None:
         [
             "--random-state",
             -1,
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
         ],
     )
     assert result.exit_code == 2
@@ -37,8 +35,6 @@ def test_error_for_invalid_test_split_ratio(runner: CliRunner) -> None:
         [
             "--test-split-ratio",
             10,
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
         ],
     )
     assert result.exit_code == 2
@@ -51,7 +47,7 @@ def test_error_for_invalid_dataset_path(runner: CliRunner) -> None:
         train,
         [
             "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.sv",
+            r"D:/dev/rsscool-ml-capstone-project/",
         ],
     )
     assert result.exit_code == 2
@@ -63,8 +59,6 @@ def test_error_for_invalid_use_scaler(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--use-scaler",
             "52",
         ],
@@ -78,8 +72,6 @@ def test_error_for_invalid_model(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--model",
             "SuperDuperModel",
         ],
@@ -93,8 +85,6 @@ def test_error_for_invalid_fetengtech(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--fetengtech",
             "SuperDuperFeatureEngineering",
         ],
@@ -108,8 +98,6 @@ def test_error_for_invalid_max_depth(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--max-depth",
             -1,
         ],
@@ -123,8 +111,6 @@ def test_error_for_invalid_n_estimators(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--n-estimators",
             -1,
         ],
@@ -138,8 +124,6 @@ def test_error_for_invalid_max_features(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--max-features",
             "super-max-feature",
         ],
@@ -153,8 +137,6 @@ def test_error_for_invalid_n_neighbors(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--n-neighbors",
             -1,
         ],
@@ -168,8 +150,6 @@ def test_error_for_invalid_weights(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--weights",
             "super-weight",
         ],
@@ -183,8 +163,6 @@ def test_error_for_max_iter(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--max-iter",
             "super-max-iter",
         ],
@@ -198,8 +176,6 @@ def test_error_for_c(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--C",
             "super-c",
         ],
@@ -213,8 +189,6 @@ def test_error_for_penalty(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--penalty",
             "super-penalty",
         ],
@@ -228,8 +202,6 @@ def test_error_for_solver(runner: CliRunner) -> None:
     result = runner.invoke(
         train,
         [
-            "--path-to-dataset",
-            r"D:/dev/rsschool-ml-capstone-project/data/train.csv",
             "--solver",
             "super-solver",
         ],

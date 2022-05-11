@@ -35,4 +35,5 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install("poetry")
+    session.run("poetry", "install")
     session.run("poetry", "run", "pytest")
