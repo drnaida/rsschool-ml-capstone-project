@@ -216,7 +216,7 @@ def test_valid_parameters(runner: CliRunner) -> None:
     cwd = os.getcwd()
     p = pathlib.Path(cwd)
     path_to_dataset = str(p) + "/tests/test_sample.csv"
-    path_to_save_model = str(p) + "/data/model.joblib"
+    path_to_save_model = str(p) + "/tests/model.joblib"
     with runner.isolated_filesystem():
         result = runner.invoke(
             train,
@@ -249,7 +249,7 @@ def test_valid_parameters_2(runner: CliRunner) -> None:
     cwd = os.getcwd()
     p = pathlib.Path(cwd)
     path_to_dataset = str(p) + "/tests/test_sample.csv"
-    path_to_save_model = str(p) + "/data/model.joblib"
+    path_to_save_model = str(p) + "/tests/model.joblib"
     with runner.isolated_filesystem():
         result = runner.invoke(
             train,
