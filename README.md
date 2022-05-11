@@ -57,6 +57,12 @@ poetry run train --path-to-dataset D:\dev\rsschool-ml-capstone\data\train.csv
 
 Train script has several arguments, but only --path-to-dataset is required.
 
+You can see the list of parameters by:
+
+```
+poetry run train --help
+```
+
 I'm going to specify other arguments here:
 
 "--path-save-model" path where to save the model with the name of the file, by default it is models/model.joblib
@@ -224,3 +230,15 @@ poetry install
 ```
 nox
 ```
+
+# Using mlflow
+
+To see models, metrics and parameters in mlflow use the command below
+
+```
+poetry run mlflow ui
+```
+
+You can open results in your **browser** by typing
+
+http://127.0.0.1:5000/
