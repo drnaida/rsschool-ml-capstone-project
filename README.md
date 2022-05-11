@@ -29,6 +29,14 @@ and 2 machine learning models. Overall 12 models.
 
 ## #15
 
+You can go into 'Actions' in repository to see that I implemented GitHub Actions with linters and tests by running nox there.
+
+Or you can trust the screenshots below:
+
+![img.png](15.png)
+
+![img.png](15-1.png)
+
 # Usage
 
 1. Clone this repository

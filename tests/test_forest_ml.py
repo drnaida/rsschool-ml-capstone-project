@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.model_selection import cross_val_score
 from forest_ml.train import train
 
+
 @pytest.fixture
 def runner() -> CliRunner:
     """Fixture providing click runner."""
@@ -216,7 +217,7 @@ def test_valid_parameters(runner: CliRunner) -> None:
     p = pathlib.Path(cwd)
     path_to_dataset = str(p) + "/tests/test_sample.csv"
     path_to_save_model = str(p) + "/tests/model.joblib"
-    with runner.isolated_filesystem() as td:
+    with runner.isolated_filesystem():
         result = runner.invoke(
             train,
             [
@@ -229,7 +230,7 @@ def test_valid_parameters(runner: CliRunner) -> None:
                 "--fetengtech",
                 "1",
                 "--use-mlflow",
-                False
+                False,
             ],
         )
         dataset = pd.read_csv(path_to_dataset)
@@ -240,6 +241,7 @@ def test_valid_parameters(runner: CliRunner) -> None:
             loaded_model, features, target, scoring="accuracy", cv=5
         )
         avg_accuracy = np.mean(accuracy)
+        os.remove(path_to_save_model)
         assert result.exit_code == 0
         assert 0 < avg_accuracy < 1
 
@@ -251,7 +253,7 @@ def test_valid_parameters_2(runner: CliRunner) -> None:
     p = pathlib.Path(cwd)
     path_to_dataset = str(p) + "/tests/test_sample.csv"
     path_to_save_model = str(p) + "/tests/model.joblib"
-    with runner.isolated_filesystem() as td:
+    with runner.isolated_filesystem():
         result = runner.invoke(
             train,
             [
@@ -264,7 +266,7 @@ def test_valid_parameters_2(runner: CliRunner) -> None:
                 "--fetengtech",
                 "2",
                 "--use-mlflow",
-                False
+                False,
             ],
         )
         dataset = pd.read_csv(path_to_dataset)
@@ -275,5 +277,6 @@ def test_valid_parameters_2(runner: CliRunner) -> None:
             loaded_model, features, target, scoring="accuracy", cv=5
         )
         avg_accuracy = np.mean(accuracy)
+        os.remove(path_to_save_model)
         assert result.exit_code == 0
         assert 0 < avg_accuracy < 1

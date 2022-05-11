@@ -25,7 +25,9 @@ def k_fold_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> Non
     dump(pipeline, params["path_save_model"])
     if params["use_mlflow"]:
         artifact_path_for_model = os.path.dirname(params["path_save_model"])
-        mlflow.sklearn.log_model(sk_model=pipeline, artifact_path=artifact_path_for_model)
+        mlflow.sklearn.log_model(
+            sk_model=pipeline, artifact_path=artifact_path_for_model
+        )
         mlflow.log_param("model_type", params["model"])
         mlflow.log_param("feat_eng_type", params["fetengtech"])
         params = _params_for_models(params)

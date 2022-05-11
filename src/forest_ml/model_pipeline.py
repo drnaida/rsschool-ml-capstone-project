@@ -23,7 +23,7 @@ def _params_for_models(params: dict[str, Any]) -> dict[str, Any]:
         "model",
         "fetengtech",
         "cross_validation_type",
-        "use_mlflow"
+        "use_mlflow",
     ]
 
     for x in params_to_delete:

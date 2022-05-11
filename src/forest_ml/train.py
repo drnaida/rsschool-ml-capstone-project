@@ -176,8 +176,6 @@ import click
     required=False,
     help="hyperparameter for logistic regression",
 )
-
-
 def train(
     path_to_dataset: pathlib.Path,
     path_save_model: pathlib.Path,
@@ -196,7 +194,7 @@ def train(
     c: float,
     penalty: str,
     solver: str,
-    use_mlflow: bool
+    use_mlflow: bool,
 ) -> None:
     params_list = {
         "path_to_dataset": path_to_dataset,
@@ -216,7 +214,7 @@ def train(
         "C": c,
         "penalty": penalty,
         "solver": solver,
-        "use_mlflow": use_mlflow
+        "use_mlflow": use_mlflow,
     }
     params: dict[str, Any] = dict(
         filter(lambda x: x[1] is not None, params_list.items())

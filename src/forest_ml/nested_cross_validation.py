@@ -102,7 +102,9 @@ def nested_cross_validation(X: Any, y: pd.Series, params: dict[str, Any]) -> Non
         mean_roc_auc_ovr = sum(d["roc_auc_ovr"] for d in sorted_best_models) / len(
             sorted_best_models
         )
-        mean_f1_avg = sum(d["f1_avg"] for d in sorted_best_models) / len(sorted_best_models)
+        mean_f1_avg = sum(d["f1_avg"] for d in sorted_best_models) / len(
+            sorted_best_models
+        )
         # save to mlflow the model
         artifact_path_for_model = os.path.dirname(params["path_save_model"])
         mlflow.sklearn.log_model(
